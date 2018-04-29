@@ -166,8 +166,9 @@ end
 % Inicaliza população
 function P = IniPop(Npop, Nvar, info, xmax, xmin)
 P = zeros(Npop, info);
-for i=1:Npop
-    for j=1:Nvar
+
+for i = 1:Npop
+    for j = 1:Nvar
         P(i, j) = (xmax-xmin)*rand() + xmin;
     end
 end
@@ -203,6 +204,7 @@ else
     Dist = CDist(Temp, Ntemp);
     Pa = (Pos == Index(1));
     Pb = (Pos == Index(2));
+    
     if Dist(Pa) > Dist(Pb)
         SelIndex = Index(1);
     else
