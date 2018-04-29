@@ -1,6 +1,8 @@
+%%
 % Implementação NSGA-II (Non-dominated Sorting Genetic Algorithm II)
 % DE (Differential Evolution)
 % Autor: Thiago Silva
+%
 function NSGAII_DE()
 Npop = 100;
 TempNpop = Npop*2;
@@ -27,12 +29,12 @@ Dom = @(a, b) Dominate(a, b, Nvar, Nobj);
 CDist = @(Pop, Npop) CrowdingDistance(Pop, Npop, Nvar, Nobj, xmax, xmin);
 
 % Fitness População
-for K=1:Npop
+for K = 1:Npop
     Pop(K, Nvar+1:L) = Fitness(Pop(K, :), Nvar);
 end
 
 % Gerações
-for gen=1:Ngen
+for gen = 1:Ngen
     
     % Construção da próxima geração
     TempPop(1:Npop, :) = Pop;
@@ -133,8 +135,8 @@ end
 
 %%
 % Verifica se o vetor A domina o vetor B.
-%  Se R = 1,  A domina B
-%  Se R = -1, B domina A
+%  Se R = 1,  então A domina B
+%  Se R = -1, então B domina A
 %  Senão A e B são incomparáveis
 function R = Dominate(A, B, Nvar, Nobj)
 I = Nvar+1;
@@ -150,7 +152,9 @@ end
 end
 
 %%
-% Função-custo
+% Função-objetivo: 
+%   f1(x) = x^2
+%   f2(x) = (x-2)^2
 function R = Fitness(X, Nvar)
 x = X(1:Nvar);
 R = zeros(2, 1);
@@ -214,7 +218,7 @@ Eta = 5;
 Sigma = 0.4;
 V = zeros(1, length(X));
 
-for K=1:Nvar
+for K = 1:Nvar
     u = rand();
     if u <= 0.5
         Delta = (2*u)^(1/(Eta+1)) - 1;
@@ -234,7 +238,7 @@ F = zeros(1, Npop);
 S = cell(1, Npop);
 N = zeros(1, Npop);
 
-for i=1:Npop
+for i = 1:Npop
     p = Pop(i, :);
     for j=1:Npop
         q = Pop(j, :);
@@ -250,11 +254,11 @@ for i=1:Npop
     end
 end
 
-i=1;
+i = 1;
 FP = find(F == 1);
 while ~isempty(FP)
-    for p=FP
-        for q=S{p}
+    for p = FP
+        for q = S{p}
             N(q) = N(q) - 1;
             if N(q) == 0
                 F(q) = i + 1;

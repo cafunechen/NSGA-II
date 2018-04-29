@@ -1,6 +1,8 @@
+%%
 % Implementação NSGA-II (Non-dominated Sorting Genetic Algorithm II)
 % Binário
 % Autor: Thiago Silva
+%
 function NSGAII_Bin()
 Npop = 100;
 TempNpop = Npop*2;
@@ -26,12 +28,12 @@ Dom = @(a, b) Dominate(a, b, Nvar, Nobj);
 CDist = @(Pop, Npop) CrowdingDistance(Pop, Npop, Nvar, Nobj, xmax, xmin);
 
 % Fitness População
-for K=1:Npop
+for K = 1:Npop
     Pop(K, Nvar+1:Info) = Fitness(Pop(K, :), Nvar, xmax, xmin);
 end
 
 % Gerações
-for gen=1:Ngen
+for gen = 1:Ngen
     disp(['Iteração ' num2str(gen)])
     
     % Construção da próxima geração
@@ -136,8 +138,8 @@ end
 
 %%
 % Verifica se o vetor A domina o vetor B.
-%  Se R = 1,  A domina B
-%  Se R = -1, B domina A
+%  Se R = 1,  então A domina B
+%  Se R = -1, então B domina A
 %  Senão A e B são incomparáveis
 function R = Dominate(A, B, Nvar, Nobj)
 I = Nvar+1;
@@ -151,8 +153,10 @@ else
 end
 end
 
-
-% Função-custo (binário)
+%%
+% Função-objetivo: 
+%   f1(x) = x^2
+%   f2(x) = (x-2)^2
 function R = Fitness(Cromo, Nvar, xmax, xmin)
 i = Cromo(1:Nvar);
 s = sum(2.^(Nvar-1:-1:0) .* i);
@@ -163,12 +167,13 @@ R(2) = (x-2).^2;
 R(3) = x;
 end
 
-
+%%
 % Inicaliza população
 function P = IniPop(Npop, Nvar, info)
 P = zeros(Npop, info);
-for i=1:Npop
-    for j=1:Nvar
+
+for i = 1:Npop
+    for j = 1:Nvar
         P(i, j) = round(rand());
     end
 end
@@ -192,6 +197,7 @@ end
 % Torneio Binário
 function SelIndex = Torneio(F, Pop, Npop, CDist)
 Index = randperm(Npop, 2);
+
 if F(Index(1)) < F(Index(2))
     SelIndex = Index(1);
 elseif F(Index(1)) > F(Index(2))
@@ -219,7 +225,8 @@ function [ F1, F2 ] = CruzamentoUniforme(Pai1, Pai2, Nvar)
 F1 = Pai1;
 F2 = Pai2;
 Mascara = round(rand(Nvar, 1));
-for i=1:Nvar
+
+for i = 1:Nvar
     if Mascara(i) == 1
         F1(i) = Pai2(i);
         F2(i) = Pai1(i);
@@ -232,7 +239,7 @@ end
 function M = MutacaoBit( X, Nvar )
 M = X;
 Index = randi(Nvar);
-for i=1:Index
+for i = 1:Index
     M(i) = ~M(i);
 end
 end
@@ -245,9 +252,9 @@ F = zeros(1, Npop);
 S = cell(1, Npop);
 N = zeros(1, Npop);
 
-for i=1:Npop
+for i = 1:Npop
     p = Pop(i, :);
-    for j=1:Npop
+    for j = 1:Npop
         q = Pop(j, :);
         D = Dom(p, q);
         if  D == 1
@@ -261,11 +268,11 @@ for i=1:Npop
     end
 end
 
-i=1;
+i = 1;
 FP = find(F == 1);
 while ~isempty(FP)
-    for p=FP
-        for q=S{p}
+    for p = FP
+        for q = S{p}
             N(q) = N(q) - 1;
             if N(q) == 0
                 F(q) = i + 1;
