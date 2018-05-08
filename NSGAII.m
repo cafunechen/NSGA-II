@@ -110,7 +110,7 @@ for gen = 1:Ngen
         if Ntemp == 1
             Pop(NpopAtual+1, :) = Temp(1, :);
         else
-            Index = randsample(Ntemp, 2);
+            Index = randperm(Ntemp, 2);
             Dist = CrowDist(Temp, Ntemp);
             if Dist(Index(1)) > Dist(Index(2))
                 Pop(NpopAtual+1, :) = Temp(Index(1), :);

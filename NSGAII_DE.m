@@ -52,7 +52,7 @@ for gen = 1:Ngen
     % Cruzamento
     K = 1;
     while K <= Npop
-        Sigma = randsample(Npop, 2);
+        Sigma = randperm(Npop, 2);
         X1 = SelPop(Rands(K), :);
         X2 = SelPop(Rands(mod(Sigma(1), Npop) + 1), :);
         X3 = SelPop(Rands(mod(Sigma(2), Npop) + 1), :);
@@ -113,7 +113,7 @@ for gen = 1:Ngen
         if Ntemp == 1
             Pop(NpopAtual+1, :) = Temp(1, :);
         else
-            Sigma = randsample(Ntemp, 2);
+            Sigma = randperm(Ntemp, 2);
             Dist = CDist(Temp, Ntemp);
             if Dist(Sigma(1)) > Dist(Sigma(2))
                 Pop(NpopAtual+1, :) = Temp(Sigma(1), :);
